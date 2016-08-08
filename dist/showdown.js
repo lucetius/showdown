@@ -1,4 +1,4 @@
-;/*! showdown 20-07-2016 */
+;/*! showdown 08-08-2016 */
 (function(){
 /**
  * Created by Tivie on 13-07-2015.
@@ -1113,8 +1113,14 @@ showdown.subParser('anchors', function (text, options, globals) {
     wholeMatch = m1;
     var linkText = m2,
         linkId = m3.toLowerCase(),
+
         url = m4,
-        title = m7;
+        title = m7,
+        target = '';
+
+    if (/.*targetblank.*/.test(linkId)) {
+      target = ' target="_blank"';
+    }
 
     if (!url) {
       if (!linkId) {
@@ -1145,6 +1151,10 @@ showdown.subParser('anchors', function (text, options, globals) {
       title = title.replace(/"/g, '&quot;');
       title = showdown.helper.escapeCharacters(title, '*_', false);
       result += ' title="' + title + '"';
+    }
+
+    if (target !== '') {
+      result += target;
     }
 
     result += '>' + linkText + '</a>';
